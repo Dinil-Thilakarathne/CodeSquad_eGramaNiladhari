@@ -2,3 +2,43 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+
+@layer base {
+  :root {
+    --color-primary: 255 204 0; /* Yellow */
+    --color-secondary: 0 37 84; /* Dark Blue */
+    --color-accent: 232 170 0; /* Darker Yellow */
+    --color-text: 51 51 51; /* Dark Gray */
+    --color-light: 249 250 251; /* Off White */
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-poppins);
+  }
+
+  body {
+    font-family: var(--font-inter);
+    color: rgb(var(--color-text));
+  }
+}
+
+@layer utilities {
+  .container-custom {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
