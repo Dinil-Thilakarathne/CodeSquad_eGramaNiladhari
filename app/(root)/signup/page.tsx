@@ -19,6 +19,11 @@ export default function SignupPage() {
     phone: "",
     username: "",
     nicNumber: "",
+    houseNumber: "",
+    streetName: "",
+    addressLine2: "",
+    province: "",
+    gramaNiladhariNo: "",
     password: "",
     confirmPassword: "",
   });
@@ -33,13 +38,25 @@ export default function SignupPage() {
       return;
     }
 
-    // TODO: Implement Supabase authentication and profile creation
-    console.log("Signup attempt:", formData);
+    try {
+      const formDataToSubmit = new FormData();
+      formDataToSubmit.append("email", formData.email);
+      formDataToSubmit.append("password", formData.password);
+      formDataToSubmit.append("name", formData.name);
+      formDataToSubmit.append("phone", formData.phone);
+      formDataToSubmit.append("username", formData.username);
+      formDataToSubmit.append("nicNumber", formData.nicNumber);
+      formDataToSubmit.append("houseNumber", formData.houseNumber);
+      formDataToSubmit.append("streetName", formData.streetName);
+      formDataToSubmit.append("addressLine2", formData.addressLine2);
+      formDataToSubmit.append("province", formData.province);
+      formDataToSubmit.append("gramaNiladhariNo", formData.gramaNiladhariNo);
 
-    // Simulate API call
-    setTimeout(() => {
+      await signup(formDataToSubmit);
+    } catch (error) {
+      console.error("Signup error:", error);
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +68,7 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-background via-primary/5 to-accent/10">
-      <div className="w-full max-w-4xl space-y-6">
+      <div className="w-full max-w-2xl space-y-6">
         <div className="flex items-center space-x-2">
           <Link href="/">
             <Button
@@ -66,8 +83,8 @@ export default function SignupPage() {
         </div>
 
         <Card className="overflow-hidden shadow-xl border-2 border-primary/20 bg-card/90 backdrop-blur-sm">
-          <CardContent className="grid p-0 md:grid-cols-2">
-            <form className="p-6 md:p-8" onSubmit={handleSubmit}>
+          <CardContent className="p-6 md:p-8">
+            <form onSubmit={handleSubmit}>
               <div className="flex flex-col gap-6">
                 <div className="flex flex-col items-center text-center">
                   <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
@@ -78,7 +95,7 @@ export default function SignupPage() {
                   </p>
                 </div>
 
-                <div className="grid gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="grid gap-2">
                     <Label
                       htmlFor="name"
@@ -117,41 +134,40 @@ export default function SignupPage() {
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="grid gap-2">
-                      <Label
-                        htmlFor="phone"
-                        className="text-card-foreground font-medium"
-                      >
-                        Phone
-                      </Label>
-                      <Input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        placeholder="Phone number"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        className="border-border focus:border-primary focus:ring-primary/20 bg-input"
-                      />
-                    </div>
-                    <div className="grid gap-2">
-                      <Label
-                        htmlFor="username"
-                        className="text-card-foreground font-medium"
-                      >
-                        Username
-                      </Label>
-                      <Input
-                        id="username"
-                        name="username"
-                        type="text"
-                        placeholder="Username"
-                        value={formData.username}
-                        onChange={handleInputChange}
-                        className="border-border focus:border-primary focus:ring-primary/20 bg-input"
-                      />
-                    </div>
+                  <div className="grid gap-2">
+                    <Label
+                      htmlFor="phone"
+                      className="text-card-foreground font-medium"
+                    >
+                      Phone
+                    </Label>
+                    <Input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      placeholder="Phone number"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      className="border-border focus:border-primary focus:ring-primary/20 bg-input"
+                    />
+                  </div>
+
+                  <div className="grid gap-2">
+                    <Label
+                      htmlFor="username"
+                      className="text-card-foreground font-medium"
+                    >
+                      Username
+                    </Label>
+                    <Input
+                      id="username"
+                      name="username"
+                      type="text"
+                      placeholder="Username"
+                      value={formData.username}
+                      onChange={handleInputChange}
+                      className="border-border focus:border-primary focus:ring-primary/20 bg-input"
+                    />
                   </div>
 
                   <div className="grid gap-2">
@@ -172,6 +188,109 @@ export default function SignupPage() {
                       required
                     />
                   </div>
+
+                  {/* Empty space for alignment */}
+                  <div></div>
+
+                  {/* Address Section Header - spans both columns */}
+                  <div className="md:col-span-2 border-t pt-4">
+                    <h3 className="text-sm font-medium text-card-foreground mb-4">
+                      Address Information
+                    </h3>
+                  </div>
+
+                  <div className="grid gap-2">
+                    <Label
+                      htmlFor="houseNumber"
+                      className="text-card-foreground font-medium"
+                    >
+                      House Number
+                    </Label>
+                    <Input
+                      id="houseNumber"
+                      name="houseNumber"
+                      type="text"
+                      placeholder="House No."
+                      value={formData.houseNumber}
+                      onChange={handleInputChange}
+                      className="border-border focus:border-primary focus:ring-primary/20 bg-input"
+                    />
+                  </div>
+
+                  <div className="grid gap-2">
+                    <Label
+                      htmlFor="streetName"
+                      className="text-card-foreground font-medium"
+                    >
+                      Street Name
+                    </Label>
+                    <Input
+                      id="streetName"
+                      name="streetName"
+                      type="text"
+                      placeholder="Street name"
+                      value={formData.streetName}
+                      onChange={handleInputChange}
+                      className="border-border focus:border-primary focus:ring-primary/20 bg-input"
+                    />
+                  </div>
+
+                  <div className="grid gap-2">
+                    <Label
+                      htmlFor="addressLine2"
+                      className="text-card-foreground font-medium"
+                    >
+                      Address Line 2
+                    </Label>
+                    <Input
+                      id="addressLine2"
+                      name="addressLine2"
+                      type="text"
+                      placeholder="City/Town"
+                      value={formData.addressLine2}
+                      onChange={handleInputChange}
+                      className="border-border focus:border-primary focus:ring-primary/20 bg-input"
+                    />
+                  </div>
+
+                  <div className="grid gap-2">
+                    <Label
+                      htmlFor="province"
+                      className="text-card-foreground font-medium"
+                    >
+                      Province
+                    </Label>
+                    <Input
+                      id="province"
+                      name="province"
+                      type="text"
+                      placeholder="Province"
+                      value={formData.province}
+                      onChange={handleInputChange}
+                      className="border-border focus:border-primary focus:ring-primary/20 bg-input"
+                    />
+                  </div>
+
+                  <div className="grid gap-2">
+                    <Label
+                      htmlFor="gramaNiladhariNo"
+                      className="text-card-foreground font-medium"
+                    >
+                      Grama Niladhari Number
+                    </Label>
+                    <Input
+                      id="gramaNiladhariNo"
+                      name="gramaNiladhariNo"
+                      type="text"
+                      placeholder="GN Division number"
+                      value={formData.gramaNiladhariNo}
+                      onChange={handleInputChange}
+                      className="border-border focus:border-primary focus:ring-primary/20 bg-input"
+                    />
+                  </div>
+
+                  {/* Empty space for alignment */}
+                  <div></div>
 
                   <div className="grid gap-2">
                     <Label
@@ -216,7 +335,6 @@ export default function SignupPage() {
                   type="submit"
                   className="w-full bg-primary hover:bg-accent text-primary-foreground font-medium h-11 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-[1.02]"
                   disabled={isLoading}
-                  formAction={signup}
                 >
                   {isLoading ? "Creating Account..." : "Create Account"}
                 </Button>
@@ -232,20 +350,6 @@ export default function SignupPage() {
                 </div>
               </div>
             </form>
-            <div className="relative hidden bg-gradient-to-br from-secondary/10 to-primary/10 md:block">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center space-y-4">
-                  <div className="flex items-center justify-center gap-2">
-                    <span className="w-3 h-3 bg-primary rounded-full animate-bounce"></span>
-                    <span className="w-2 h-2 bg-accent rounded-full animate-bounce delay-100"></span>
-                    <span className="w-3 h-3 bg-secondary rounded-full animate-bounce delay-200"></span>
-                  </div>
-                  <p className="text-muted-foreground">
-                    Join our community today
-                  </p>
-                </div>
-              </div>
-            </div>
           </CardContent>
         </Card>
         <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:text-secondary hover:[&_a]:text-primary">
